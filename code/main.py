@@ -16,7 +16,7 @@ class SkillSchema(BaseModel):
     name: str
     
     class Config:
-        from_attributes = True
+        from_attributes = True # Convertir les attributs en dictionnaire
 
 class CitySchema(BaseModel):
     id: int
