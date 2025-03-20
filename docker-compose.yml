@@ -1,0 +1,32 @@
+services:
+  node:
+    build: .
+    container_name: backend-python-express
+    volumes:
+      - ./code:/code
+    
+    tty: true
+    stdin_open: true
+    
+    restart: "no"
+
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/mydb
+    
+    working_dir: /code
+    command: ["bash"]
+
+    ports:
+      - 3000:3000
+
+  db:
+    image: postgres
+    container_name: db_python
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - ./db:/code
+    ports:
+      - 5432:5432

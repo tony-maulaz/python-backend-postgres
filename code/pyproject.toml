@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "mon-projet-fastapi"
+version = "0.1.0"
+description = "Un projet FastAPI avec Poetry"
+authors = ["Tony Maualz <tony.maulaz@heig-vd.ch>"]
+license = "MIT"
+package-mode = false
+
+[tool.poetry.scripts]
+start = "uvicorn backend:app"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.110.0"
+uvicorn = "^0.29.0"
+sqlalchemy = "^2.0.39"
+psycopg2 = "^2.9.0"
+asyncpg = "^0.30.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
