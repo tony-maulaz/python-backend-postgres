@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship, Mapped
 from .base import Base
 from pydantic import BaseModel
 from typing import List, Optional
+from .person import person_skills
 
 class SkillSchema(BaseModel):
     id: int

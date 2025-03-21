@@ -1,8 +1,30 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Table, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship, Mapped
+from .base import Base
+from pydantic import BaseModel
+from typing import Optional
 
-Base = declarative_base()
+
+class PersonSchema(BaseModel):
+    id: int
+    name: str
+    age: int
+    skills: list["SkillSchema"] = []
+    city: Optional["CitySchema"]
+    #city: Optional[str]
+
+    class Config:
+        from_attributes = True
+
+class PersonCreate(BaseModel):
+    name: str
+    age: int
+    city_id: Optional[int] = None
+
+class PersonSkillCreate(BaseModel):
+    person_id: int
+    skill_id: int
+
 
 # Table Pivot pour la relation Many-to-Many (Person <-> Skill)
 person_skills = Table(
@@ -12,24 +34,6 @@ person_skills = Table(
     Column("skill_id", Integer, ForeignKey("skills.id"), primary_key=True),
     UniqueConstraint("person_id", "skill_id", name="uq_person_skill")
 )
-
-class City(Base):
-    __tablename__ = "cities"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
-
-    # Relation avec Person (One-to-Many)
-    persons: Mapped[list["Person"]] = relationship("Person", back_populates="city")
-
-class Skill(Base):
-    __tablename__ = "skills"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
-
-    # Relation Many-to-Many avec Person
-    persons: Mapped[list["Person"]] = relationship("Person", secondary=person_skills, back_populates="skills")
 
 class Person(Base):
     __tablename__ = "persons"
@@ -44,3 +48,9 @@ class Person(Base):
 
     # Relation Many-to-Many avec Skill
     skills: Mapped[list["Skill"]] = relationship("Skill", secondary=person_skills, back_populates="persons")
+
+
+# Importer les classes SkillSchema et CitySchema en lazy loading
+# Pour éviter cet import, il faut faire un dossier schemas et mettre les fichiers dedans
+from .skill import SkillSchema
+from .city import CitySchema    

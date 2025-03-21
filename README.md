@@ -61,6 +61,12 @@ poetry run python init_db.py
 ```
 
 ## Lancement du serveur
+### Programme example
+```bash
+poetry run uvicorn example:app --host 0.0.0.0 --port 3000 --reload
+```
+
+### Programme full
 ```bash
 poetry run uvicorn main:app --host 0.0.0.0 --port 3000 --reload
 ```
@@ -74,16 +80,21 @@ http://127.0.0.1:3000/redoc
 
 ## Test des routes
 ```bash
-curl -X POST http://127.0.0.1:3000/addperson -H "Content-Type: application/json" -d '{"name": "Doe", "age": 30, "city_id": 1}'
+http://127.0.0.1:3000/api/persons/full
 
-curl -X POST http://127.0.0.1:3000/addskills -H "Content-Type: application/json" -d '{"person_id": 1, "skill_id": 1}'
+http://127.0.0.1:3000/api/persons
 
-curl -X POST http://127.0.0.1:3000/addskills-withoutcheck -H "Content-Type: application/json" -d '{"person_id": 1, "skill_id": 1}'
+http://127.0.0.1:3000/api/persons/1
+
+curl -X POST http://127.0.0.1:3000/api/persons/add -H "Content-Type: application/json" -d '{"name": "Doe", "age": 30, "city_id": 1}'
+
+curl -X POST http://127.0.0.1:3000/api/persons/addskill -H "Content-Type: application/json" -d '{"person_id": 1, "skill_id": 1}'
+
+curl -X POST http://127.0.0.1:3000/api/persons/addskills-withoutcheck -H "Content-Type: application/json" -d '{"person_id": 1, "skill_id": 1}'
 
 
-curl -X POST http://127.0.0.1:8000/addcity -H "Content-Type: application/json" -d '{"name": "Paris"}'
-curl -X POST http://127.0.0.1:8000/addperson -H "Content-Type: application/json" -d '{"nom": "Doe", "prenom": "John", "age": 30, "city_id": 1}'
-curl -X POST http://127.0.0.1:8000/addskill -H "Content-Type: application/json" -d '{"name": "Python"}'
-curl -X POST http://127.0.0.1:8000/addpersonskill -H "Content-Type: application/json" -d '{"person_id": 1, "skill_id": 1}'
+http://127.0.0.1:3000/api/cities/
+http://127.0.0.1:3000/api/cities/1
+http://127.0.0.1:3000/api/cities/?city_name=Paris
 ```
 
