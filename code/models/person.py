@@ -35,6 +35,25 @@ person_skills = Table(
     UniqueConstraint("person_id", "skill_id", name="uq_person_skill")
 )
 
+
+class PersonSkill(Base):
+    __tablename__ = "person_skills"
+
+    person_id = Column(Integer, ForeignKey("persons.id"), primary_key=True)
+    skill_id = Column(Integer, ForeignKey("skills.id"), primary_key=True)
+
+    # Contraintes d'unicité (équivalent à UniqueConstraint)
+    __table_args__ = (
+        UniqueConstraint("person_id", "skill_id", name="uq_person_skill"),
+    )
+
+    # Optionnel : relations vers les modèles Person et Skill
+    person = relationship("Person", back_populates="person_skills")
+    skill = relationship("Skill", back_populates="skill_persons")
+
+    skill_persons = relationship("PersonSkill", back_populates="skill")
+
+
 class Person(Base):
     __tablename__ = "persons"
 

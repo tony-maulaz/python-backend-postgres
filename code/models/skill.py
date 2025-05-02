@@ -22,3 +22,5 @@ class Skill(Base):
 
     # Relation Many-to-Many avec Person
     persons: Mapped[list["Person"]] = relationship("Person", secondary=person_skills, back_populates="skills")
+
+    skill_persons = relationship("PersonSkill", back_populates="skill")

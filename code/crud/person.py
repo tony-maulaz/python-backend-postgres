@@ -80,9 +80,15 @@ async def add_skill_to_person(person_skill: PersonSkillCreate, db: AsyncSession)
 
 async def add_skill_without_check(person_skill: PersonSkillCreate, db: AsyncSession):
     try:
-        stmt = person_skills.insert().values(person_id=person_skill.person_id, skill_id=person_skill.skill_id)
-        await db.execute(stmt)
+
+        new_link = PersonSkill(person_id=1, skill_id=3)
+        db.add(new_link)
         await db.commit()
+
+        # Avant en utilisant la table pivot
+        # stmt = person_skills.insert().values(person_id=person_skill.person_id, skill_id=person_skill.skill_id)
+        # await db.execute(stmt)
+        # await db.commit()
         return {"message": "Skill added to person successfully"}
 
     except IntegrityError:
