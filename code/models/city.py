@@ -11,7 +11,7 @@ class CitySchema(BaseModel):
         from_attributes = True
 
 class City(Base):
-    __tablename__ = "cities"
+    __tablename__ = "city"
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)

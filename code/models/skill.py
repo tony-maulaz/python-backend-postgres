@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship, Mapped
 from .base import Base
 from pydantic import BaseModel
 from typing import List, Optional
-from .person import person_skills
 
 class SkillSchema(BaseModel):
     id: int
@@ -15,12 +14,12 @@ class SkillSchema(BaseModel):
 
 
 class Skill(Base):
-    __tablename__ = "skills"
+    __tablename__ = "skill"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
 
     # Relation Many-to-Many avec Person
-    persons: Mapped[list["Person"]] = relationship("Person", secondary=person_skills, back_populates="skills")
+    persons: Mapped[list["Person"]] = relationship("Person", secondary="person_skill", back_populates="skills")
 
-    skill_persons = relationship("PersonSkill", back_populates="skill")
+from .person import PersonSkill

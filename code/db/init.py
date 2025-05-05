@@ -2,16 +2,31 @@ import asyncio
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import text
+
 from db.db import engine
 from models.base import Base
 from models.city import City
-from models.person import Person
 from models.skill import Skill
+from models.person import Person
 
 async def init_db():
     async with engine.begin() as conn:
-        print("Suppression et recréation des tables...")
-        await conn.run_sync(Base.metadata.drop_all)
+        print("Suppression et recréation des tables... (DROP CASCADE)")
+        await conn.execute(text("""
+            DO $$
+            DECLARE
+                r RECORD;
+            BEGIN
+                FOR r IN (
+                    SELECT tablename 
+                    FROM pg_tables 
+                    WHERE schemaname = 'public'
+                ) LOOP
+                    EXECUTE 'DROP TABLE IF EXISTS ' || quote_ident(r.tablename) || ' CASCADE';
+                END LOOP;
+            END $$;
+        """))
         await conn.run_sync(Base.metadata.create_all)
 
     async with AsyncSession(engine) as session:

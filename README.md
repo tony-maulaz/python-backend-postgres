@@ -88,9 +88,7 @@ http://127.0.0.1:3000/api/persons/1
 
 curl -X POST http://127.0.0.1:3000/api/persons/add -H "Content-Type: application/json" -d '{"name": "Doe", "age": 30, "city_id": 1}'
 
-curl -X POST http://127.0.0.1:3000/api/persons/addskill -H "Content-Type: application/json" -d '{"person_id": 1, "skill_id": 1}'
-
-curl -X POST http://127.0.0.1:3000/api/persons/addskills-withoutcheck -H "Content-Type: application/json" -d '{"person_id": 1, "skill_id": 1}'
+curl -X POST http://127.0.0.1:3000/api/persons/addskill -H "Content-Type: application/json" -d '{"person_id": 1, "skill_id": 2}'
 
 
 http://127.0.0.1:3000/api/cities/
