@@ -27,7 +27,7 @@ Un flush ne valide pas les changements en base, il les prépare pour un commit u
 # Docker
 ```bash
 docker-compose up -d
-- `docker exec -it backend-python-express bash`
+docker exec -it backend-python bash
 ```
 
 Pour afficher les logs des containers :
@@ -35,7 +35,7 @@ Pour afficher les logs des containers :
 docker-compose logs -f -n10
 ```
 
-# Base de données
+# Base de données (en mode cli)
 ## Création de la base de données
 Pour se connecteur en CLI : 
 ```bash

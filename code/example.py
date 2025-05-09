@@ -25,41 +25,18 @@ class City(Base):
     # Relation avec Person (One-to-Many)
     persons: Mapped[list["Person"]] = relationship("Person", back_populates="city")
 
-class Person(Base):
-    __tablename__ = "persons"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    age = Column(Integer)
-    city_id = Column(Integer, ForeignKey("cities.id"))
+# Créer le modèle person
 
-    city: Mapped["City"] = relationship("City", back_populates="persons")
+# Créer le modèle PersonCreate
 
-# Schémas Pydantic
-class PersonCreate(BaseModel):
-    name: str
-    age: int
-    city_id: Optional[int] = None
+# Créer le modèle CityOut
 
-class CityOut(BaseModel):
-    id: int
-    name: str
-    class Config:
-        from_attributes = True
+# Créer le modèle PersonOut 
 
-class PersonOut(BaseModel):
-    id: int
-    name: str
-    age: int
-    class Config:
-        from_attributes = True
+# Créer le modèle PersonFullOut (+ city)
 
-class PersonFullOut(BaseModel):
-    id: int
-    name: str
-    age: int
-    city: CityOut
-    class Config:
-        from_attributes = True
+
+
 
 # Dépendance pour la DB
 async def get_db():
@@ -76,21 +53,7 @@ async def list_persons(db: AsyncSession = Depends(get_db)):
     persons = result.scalars().all()
     return persons
 
-# Route GET : lire toutes les personnes avec leur skill
-@app.get("/personsfull", response_model=list[PersonFullOut])
-async def list_persons(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(
-        select(Person).
-        options(joinedload(Person.city)).
-        order_by(Person.id))
-    persons = result.scalars().all()
-    return persons
+# Route GET personsfull : lire toutes les personnes avec leur skill
 
-# Route POST : ajouter une personne
-@app.post("/add_person", response_model=PersonOut)
-async def add_person(person: PersonCreate, db: AsyncSession = Depends(get_db)):
-    db_person = Person(name=person.name, age=person.age, city_id=person.city_id)
-    db.add(db_person)
-    await db.commit()
-    await db.refresh(db_person)
-    return db_person
+
+# Route POST add_person : ajouter une personne
